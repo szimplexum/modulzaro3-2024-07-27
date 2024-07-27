@@ -249,21 +249,28 @@ function printAllProducts(data) {
 
 /*    MEGOLDÁS HELYE  2.start   */
 function printCheaperThan(data, maxPrice) {
+  let filteredShopData = [];
   let quantity = 0;
   data.forEach((article) => {
     if (article.price <= maxPrice) {
-      console.log(article);
+      filteredShopData.push(article);
+      // console.log(article);
       quantity++;
     }
   });
-  if (quantity == 0) {
-    console.log("Nincs ilyen termék");
-  } else {
-    console.log(`Összesen ${quantity} db tarméket találtunk`);
-  }
+  //   if (quantity == 0) {
+  //     console.log("Nincs ilyen termék");
+  //   } else {
+  //     console.log(`Összesen ${quantity} db tarméket találtunk`);
+  //   }
+  return filteredShopData;
 }
-printCheaperThan(shopData, Number(prompt("Add meg a maximálás árat")));
-//printCheaperThan(shopData, 8)
+// const newShopArray = printCheaperThan(
+//   shopData,
+//   Number(prompt("Add meg a maximálás árat"))
+// );
+// console.log(newShopArray);
+
 /*    MEGOLDÁS HELYE  2.end     */
 
 // 3. Feladat (10)
@@ -272,9 +279,35 @@ printCheaperThan(shopData, Number(prompt("Add meg a maximálás árat")));
 // meg paraméterként, majd visszaadja a legolcsóbb termék árát!
 // A teljesértékű megoldáshoz használd a reduce metódust!
 
-/*
-    MEGOLDÁS HELYE
-*/
+/*    MEGOLDÁS HELYE  3.start   */
+function getCheapestProduct(dataArray) {
+  let cheapestArticlePrice = dataArray[0].price;
+  let cheapestArticle = dataArray[0];
+
+  const ca = dataArray.reduce((cheapestArticle, actArticle) => {
+    if (actArticle.price < cheapestArticlePrice) {
+      cheapestArticlePrice = actArticle.price;
+      cheapestArticle = actArticle;
+    }
+  }, cheapestArticlePrice);
+  return cheapestArticlePrice;
+
+  //     dataArray.forEach((actArticle) => {
+  //       if (cheapestArticlePrice > actArticle.price) {
+  //         cheapestArticlePrice = actArticle.price;
+  //         cheapestArticle = actArticle;
+  //       }
+  //     });
+  //   return cheapestArticle;
+}
+const cheapestArticle = getCheapestProduct(shopData);
+
+// const cheapestArticle = getCheapestProduct(shopData);
+// console.log(
+//   `A legolcsóbb termékünk a ${cheapestArticle.title}, ezt most csak ${cheapestArticle.price} áron adjuk.`
+// );
+
+/*    MEGOLDÁS HELYE  3.end     */
 
 // 4. Feladat (15)
 
@@ -296,10 +329,29 @@ printCheaperThan(shopData, Number(prompt("Add meg a maximálás árat")));
         </div>
     </div>
 */
+/*    MEGOLDÁS HELYE  4.start   */
 
-/*
-    MEGOLDÁS HELYE
-*/
+function render(articleArray) {
+  articleArray.forEach((article) => {
+    const productsDiv = document.getElementById("products");
+    productsDiv.insertAdjacentHTML(
+      "afterbegin",
+      `    <div class="product-card">
+              <img class="product-img" src="${article.image}" >
+            <div class="product-details">
+            <h4 class="product-name">${article.title}</h4>
+            <ul>
+                <li>category: ${article.category}</li>
+                <li>price: ${article.price}</li>
+                <li>description: ${article.description}</li>
+            </ul>
+        </div>
+    </div>`
+    );
+  });
+}
+render(shopData);
+/*    MEGOLDÁS HELYE  4.end     */
 
 // 5. Feladat (15)
 
@@ -307,16 +359,29 @@ printCheaperThan(shopData, Number(prompt("Add meg a maximálás árat")));
 // akkor egy olyan tömböt ad vissza, amiben csak a termékek kategóriái találhatók!
 // Minden kategória csak egyszer szerepeljen a tömbben!
 
-/*
-    MEGOLDÁS HELYE
-*/
+/*    MEGOLDÁS HELYE  5.Strat     */
+function getUniqueCategories(articleArray) {
+  const categorys = articleArray.map((article) => article.category);
+  const uniqueCategorys = articleArray.filter(
+    (article, index) => categorys.indexOf(article.category) === index
+  );
+  return uniqueCategorys;
+}
+console.log(getUniqueCategories(shopData));
+
+/*    MEGOLDÁS HELYE  5.end     */
 
 // 6. Feladat (20)
 
-// Készíts egy drawCategories függvényt, aminek egy termékkategóriák neveit tartalmazó tömböt tudunk paraméterként megadni!
-// Ha meghívjuk a függvényt az kirajzol egy gombot minden egyes kategóriának, ami a paraméterként megadott tömbben található.
+// Készíts egy drawCategories függvényt, aminek egy termékkategóriák neveit tartalmazó
+// tömböt tudunk paraméterként megadni!
+// Ha meghívjuk a függvényt az kirajzol egy gombot minden egyes kategóriának,
+// ami a paraméterként megadott tömbben található.
+
 // A gombokon lévő szöveg a kategóriák neve legyen!
-// Amelyik gombra utoljára rákattintunk, annak a háttérszíne változzon meg pirosra!
+
+// // Amelyik gombra utoljára rákattintunk, annak a háttérszíne változzon meg pirosra!
+
 // Egyszerre csak egy gomb háttere legyen piros!
 // Ha piros hátterű gombra kattintunk tűnjön el a piros háttér!
 // A megoldáshoz az index.html-be, a products azonosítójú div fölé kell rajzolnod
@@ -329,7 +394,28 @@ printCheaperThan(shopData, Number(prompt("Add meg a maximálás árat")));
         <!-- stb. -->
     </div>
 */
+const categorys = getUniqueCategories(shopData);
 
+function drawCategories(articleArray) {
+  categorys.forEach((actArticle) => {
+    let productDIV = document.getElementById("products");
+
+    const catBtnDIV = document.createElement("div");
+    catBtnDIV.classList.add("categories-container");
+    catBtnDIV.innerHTML = `<button class="category-btn">${actArticle.category}</button>`;
+
+    const button = document.this
+    // button.addEventListener("click", function () {
+    //     button.hidden = true;
+    //     // .category-btn.active {
+    //     //     background-color: red;
+    //     // }
+    // });
+
+    productDIV.before(catBtnDIV);
+  });
+}
+drawCategories(shopData);
 /*
     MEGOLDÁS HELYE
 */
