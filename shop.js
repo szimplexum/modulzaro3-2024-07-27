@@ -265,12 +265,12 @@ function printCheaperThan(data, maxPrice) {
   //   }
   return filteredShopData;
 }
-// const newShopArray = printCheaperThan(
-//   shopData,
-//   Number(prompt("Add meg a maximálás árat"))
-// );
-// console.log(newShopArray);
-
+const newShopArray = printCheaperThan(
+  shopData,
+  Number(prompt("Add meg a maximálás árat"))
+);
+console.log(`A 2. feladat eredménye az következő tömb:`);
+console.log(newShopArray);
 /*    MEGOLDÁS HELYE  2.end     */
 
 // 3. Feladat (10)
@@ -281,16 +281,12 @@ function printCheaperThan(data, maxPrice) {
 
 /*    MEGOLDÁS HELYE  3.start   */
 function getCheapestProduct(dataArray) {
-  let cheapestArticlePrice = dataArray[0].price;
-  let cheapestArticle = dataArray[0];
-
-  const ca = dataArray.reduce((cheapestArticle, actArticle) => {
-    if (actArticle.price < cheapestArticlePrice) {
-      cheapestArticlePrice = actArticle.price;
-      cheapestArticle = actArticle;
-    }
-  }, cheapestArticlePrice);
-  return cheapestArticlePrice;
+  const cheapestArticle = dataArray.reduce((cheapestArticle, actArticle) => {
+    return actArticle.price < cheapestArticle.price
+      ? actArticle
+      : cheapestArticle;
+  });
+  return cheapestArticle;
 
   //     dataArray.forEach((actArticle) => {
   //       if (cheapestArticlePrice > actArticle.price) {
@@ -301,9 +297,8 @@ function getCheapestProduct(dataArray) {
   //   return cheapestArticle;
 }
 const cheapestArticle = getCheapestProduct(shopData);
-
 console.log(
-  `A legolcsóbb termékünk a ${cheapestArticle.title}, ezt most csak ${cheapestArticle.price} áron adjuk.`
+  `3. feladat eredménye: \n A legolcsóbb termékünk a ${cheapestArticle.title}, ezt most csak ${cheapestArticle.price} áron adjuk.`
 );
 
 /*    MEGOLDÁS HELYE  3.end     */
@@ -349,7 +344,7 @@ function render(articleArray) {
     );
   });
 }
-render(shopData);
+//render(shopData);
 /*    MEGOLDÁS HELYE  4.end     */
 
 // 5. Feladat (15)
@@ -366,6 +361,7 @@ function getUniqueCategories(articleArray) {
   );
   return uniqueCategorys;
 }
+console.log(`Az 5. feladat eredménye:`);
 console.log(getUniqueCategories(shopData));
 
 /*    MEGOLDÁS HELYE  5.end     */
@@ -378,7 +374,7 @@ console.log(getUniqueCategories(shopData));
 // ami a paraméterként megadott tömbben található.
 // A gombokon lévő szöveg a kategóriák neve legyen!
 
-// // Amelyik gombra utoljára rákattintunk, annak a háttérszíne változzon meg pirosra!
+// Amelyik gombra utoljára rákattintunk, annak a háttérszíne változzon meg pirosra!
 
 // Egyszerre csak egy gomb háttere legyen piros!
 // Ha piros hátterű gombra kattintunk tűnjön el a piros háttér!
@@ -397,45 +393,88 @@ console.log(getUniqueCategories(shopData));
 const categorys = getUniqueCategories(shopData);
 
 function drawCategories(articleArray) {
-  categorys.forEach((actArticle, index) => {
+  articleArray.forEach((actArticle) => {
     let productDIV = document.getElementById("products");
 
     const catBtnDIV = document.createElement("div");
     catBtnDIV.classList.add("categories-container");
-    catBtnDIV.innerHTML = `<button class="category-btn" id=btn-${index}>${actArticle.category}</button>`;
-
-    //const btn = document.getElementById("btn-0");
-    const btn = catBtnDIV.querySelector(`#btn-${index}`);
-    btn.addEventListener("click", function () {
-      btn.classList.toggle("active");
-    });
+    catBtnDIV.innerHTML = `<button class="category-btn">${actArticle.category}</button>`;
 
     productDIV.before(catBtnDIV);
-    //let btn = catBtnDIV.textContent = `${actArticle.category}`;
   });
+
+  //   let btn = document.querySelectorAll(".category-btn");
+  //   btn.forEach((b) => {
+  //     b.addEventListener("click", function () {
+  //         b.classList.toggle("active");
+  //         console.log(b.textContent);
+  //     });
+  //   });
 }
-drawCategories(shopData);
+//drawCategories(categorys);  <--8.as miatt kikommentezve
 /*    MEGOLDÁS HELYE  6.end     */
 
 // 7. Feladat (20)
 
-// Másold át ide a 6. feladatban található gombra kattintás logikáját és változtasd meg úgy, hogy ha van piros hátterű gomb,
-// akkor csak azok a termékek látszódjanak, amelyeknek a kategóriája megegyezik a piros hátterű gombon szereplő kategóriával!
+// Másold át ide a 6. feladatban található gombra kattintás logikáját és változtasd meg úgy,
+// hogy ha van piros hátterű gomb, akkor csak azok a termékek látszódjanak,
+// amelyeknek a kategóriája megegyezik a piros hátterű gombon szereplő kategóriával!
+
 // A termékek kirajzolásához használd a 4. feladatban létrehozott render metódust!
 
-// Ne töröld ki a 6. feladatban található megoldásodat, helyette írj itt egy új függvényt, amivel helyettesíteni tudjuk
-// az előző feladatban használt logikát!
+// Ne töröld ki a 6. feladatban található megoldásodat, helyette írj itt egy új függvényt,
+// amivel helyettesíteni tudjuk az előző feladatban használt logikát!
 
 // (Ha nem sikerült a rendert megcsinálnod, akkor írd ki a konzolra, hogy mely termékeket kellene kirajzolnia a programnak)
 
-/*
-    MEGOLDÁS HELYE
-*/
+/*    MEGOLDÁS HELYE  7.Start     */
+const categoryFilterByButtun = (filter) => {
+  const filteredCategory = shopData.filter(
+    (article) => article.category == filter
+  );
+  return filteredCategory;
+};
+function caegoryButtons() {
+  let btn = document.querySelectorAll(".category-btn");
+  btn.forEach((b) => {
+    b.addEventListener("click", function (filter) {
+      const productDIV = document.getElementById("products");
+      b.classList.toggle("active");
+      if (b.classList == "category-btn active") {
+        render(categoryFilterByButtun(b.textContent));
+      } else {
+        productDIV.innerHTML = "";
+      }
+    });
+  });
+}
+//caegoryButtons()
+
+/*    MEGOLDÁS HELYE  7.end     */
 
 // 8. Feladat (10)
 
+fetch("https://fakestoreapi.com/products")
+  .then((response) => response.json())
+  .then((fetchedShopdata) => {
+    console.log(`fetchedShopdata`);
+    
+    getUniqueCategories(fetchedShopdata);
+    console.log(`getUniqueCategories:`);
+    console.log(getUniqueCategories(fetchedShopdata));
+    
+    drawCategories(getUniqueCategories(fetchedShopdata));
+    //render(fetchedShopdata);
+    caegoryButtons();
+  })
+  .catch((error) => {
+    console.error("Hopp hopp:", error);
+  });
+
 // Készíts egy renderFromAPI nevű függvényt, ami a shopData tömb helyett a következő API-ról tölti le a termékek adatait: https://fakestoreapi.com/products
-// Miután megvannak a termékek adatai, hívd meg az előzőekben elkészített render, getUniqueCategories és drawCategories metódusokat a letöltött termékekkel!
+// Miután megvannak a termékek adatai, hívd meg az előzőekben elkészített render,
+// getUniqueCategories és
+// drawCategories metódusokat a letöltött termékekkel!
 // (Ha nem tudtad megcsinálni ezeket a függvényeket, akkor írd ki a konzolra a függvények nevét ott, ahol meghívnád őket!)
 // Ha az API vagy az adatok kezelése hibát eredményez írd ki a konzolra, hogy "Hopp, hopp!" és írd ki az elkapott hibát is!
 
