@@ -236,7 +236,7 @@ function printAllProducts(data) {
   });
 }
 
-//printAllProducts(shopData);
+// printAllProducts(shopData);
 
 /*    MEGOLDÁS HELYE  1.end     */
 
@@ -302,10 +302,9 @@ function getCheapestProduct(dataArray) {
 }
 const cheapestArticle = getCheapestProduct(shopData);
 
-// const cheapestArticle = getCheapestProduct(shopData);
-// console.log(
-//   `A legolcsóbb termékünk a ${cheapestArticle.title}, ezt most csak ${cheapestArticle.price} áron adjuk.`
-// );
+console.log(
+  `A legolcsóbb termékünk a ${cheapestArticle.title}, ezt most csak ${cheapestArticle.price} áron adjuk.`
+);
 
 /*    MEGOLDÁS HELYE  3.end     */
 
@@ -377,7 +376,6 @@ console.log(getUniqueCategories(shopData));
 // tömböt tudunk paraméterként megadni!
 // Ha meghívjuk a függvényt az kirajzol egy gombot minden egyes kategóriának,
 // ami a paraméterként megadott tömbben található.
-
 // A gombokon lévő szöveg a kategóriák neve legyen!
 
 // // Amelyik gombra utoljára rákattintunk, annak a háttérszíne változzon meg pirosra!
@@ -394,31 +392,30 @@ console.log(getUniqueCategories(shopData));
         <!-- stb. -->
     </div>
 */
+/*    MEGOLDÁS HELYE  6. Start   */
+
 const categorys = getUniqueCategories(shopData);
 
 function drawCategories(articleArray) {
-  categorys.forEach((actArticle) => {
+  categorys.forEach((actArticle, index) => {
     let productDIV = document.getElementById("products");
 
     const catBtnDIV = document.createElement("div");
     catBtnDIV.classList.add("categories-container");
-    catBtnDIV.innerHTML = `<button class="category-btn">${actArticle.category}</button>`;
+    catBtnDIV.innerHTML = `<button class="category-btn" id=btn-${index}>${actArticle.category}</button>`;
 
-    const button = document.this
-    // button.addEventListener("click", function () {
-    //     button.hidden = true;
-    //     // .category-btn.active {
-    //     //     background-color: red;
-    //     // }
-    // });
+    //const btn = document.getElementById("btn-0");
+    const btn = catBtnDIV.querySelector(`#btn-${index}`);
+    btn.addEventListener("click", function () {
+      btn.classList.toggle("active");
+    });
 
     productDIV.before(catBtnDIV);
+    //let btn = catBtnDIV.textContent = `${actArticle.category}`;
   });
 }
 drawCategories(shopData);
-/*
-    MEGOLDÁS HELYE
-*/
+/*    MEGOLDÁS HELYE  6.end     */
 
 // 7. Feladat (20)
 
